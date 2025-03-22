@@ -1,0 +1,32 @@
+{
+	"name": "appraspberry",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.19.1",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/bcrypt": "^5.0.2",
+		"@types/jsonwebtoken": "^9.0.9",
+		"@types/node": "^22.13.10",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.19.3",
+		"typescript": "^5.8.2",
+		"vite": "^5.0.3"
+	},
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"dotenv": "^16.4.7",
+		"jsonwebtoken": "^9.0.2",
+		"mongodb": "^6.14.2"
+	}
+}
