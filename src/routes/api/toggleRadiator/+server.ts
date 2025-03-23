@@ -26,7 +26,7 @@ async function updateRadiator() {
 
     if (!document) {
       console.log("Document non trouvé, création d'un nouveau avec bit 5 activé.");
-      newRadiatorValue = 0b100000; // Initialise en mettant le bit 5 à 1
+      newRadiatorValue = 0b100000;
 
       const result = await collection.insertOne({
         _id: objectId,
