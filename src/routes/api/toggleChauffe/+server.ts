@@ -6,14 +6,14 @@ dotenv.config();
 
 const uri = process.env.MONGO_URI as string;
 const dbName = process.env.DB_NAME as string;
-const collectionName = process.env.COLLECTION_NAME as string;
+const controleCollection = process.env.CONTROLE_COLLECTION as string;
 
 async function updateRadiator() {
   const client = new MongoClient(uri);
   try {
     await client.connect();
     const db = client.db(dbName);
-    const collection = db.collection(collectionName);
+    const collection = db.collection(controleCollection);
 
 
     const objectId = new ObjectId('67d57c53b9f41d664235ceb2');
@@ -39,7 +39,6 @@ async function updateRadiator() {
         console.log('Erreur lors de la création du document.');
       }
     } else {
-      // Toggle du bit 5
       newRadiatorValue = document.controle_document ^ 0b100000;
 
       const result = await collection.updateOne(

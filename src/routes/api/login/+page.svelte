@@ -7,7 +7,7 @@
     let errorMessage = writable('');
   
     async function login() {
-      errorMessage.set(''); // Réinitialise les erreurs
+      errorMessage.set('');
   
       try {
         const res = await fetch('/api/login', {
@@ -22,9 +22,8 @@
         }
   
         localStorage.setItem('token', data.token);
-        goto('/dashboard'); // Redirige après connexion réussie
+        goto('/dashboard');
       } catch (error) {
-        // Gérer l'erreur correctement avec instanceof Error
         if (error instanceof Error) {
           errorMessage.set(error.message); // Utilise message si c'est une instance d'Error
         } else {

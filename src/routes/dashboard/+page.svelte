@@ -2,50 +2,43 @@
   import { writable } from 'svelte/store';
   import { onMount } from 'svelte';
 
-  let controle_document = writable<number | null>(null);  // Valeur initiale indéfinie
+  let controle_document = writable<number | null>(null);
+  let temps_chauffe = writable<number | null>(null);
+  let temperature_cave = writable<number | null>(null);
   let errorMessage = writable('');
 
-  // Fonction pour récupérer l'état initial du radiateur
   async function fetchInitialState() {
     try {
-      const res = await fetch('/api/getRadiatorState');
+      const res = await fetch('/api/getChauffeState');
       const data = await res.json();
 
       if (res.ok) {
         controle_document.set(data.controle_document);
+        temps_chauffe.set(data.temps_chauffe);
+        temperature_cave.set(data.temperature_cave);
       } else {
-        errorMessage.set(`Erreur lors de la récupération: ${data.error || 'Unknown error'}`);
+        errorMessage.set(`Erreur Chauffe-eau: ${data.error || 'Unknown error'}`);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        errorMessage.set(`Une erreur est survenue: ${error.message}`);
-      } else {
-        errorMessage.set('Une erreur inconnue est survenue');
-      }
+      errorMessage.set(`Erreur Chauffe-eau: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     }
   }
 
-  // Fonction pour basculer l'état du radiateur
-  async function toggleRadiator() {
+  async function toggleChauffe() {
     try {
-      const res = await fetch('/api/toggleRadiator', { method: 'POST' });
+      const res = await fetch('/api/toggleChauffe', { method: 'POST' });
       const data = await res.json();
 
       if (res.ok) {
         controle_document.set(data.controle_document);
       } else {
-        errorMessage.set(`Erreur lors de la mise à jour: ${data.error || 'Unknown error'}`);
+        errorMessage.set(`Erreur Chauffe-eau: ${data.error || 'Unknown error'}`);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        errorMessage.set(`Une erreur inconnue est survenue: ${error.message}`);
-      } else {
-        errorMessage.set('Une erreur inconnue est survenue');
-      }
+      errorMessage.set(`Erreur Chauffe-eau: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     }
   }
 
-  // Récupérer l'état au chargement du composant
   onMount(fetchInitialState);
 </script>
 
@@ -56,14 +49,21 @@
     <p class="error">{$errorMessage}</p>
   {/if}
 
+  <!-- Section Radiateur -->
   {#if $controle_document !== null}
-    <p>L'état du radiateur est : { ($controle_document & 0b100000) !== 0 ? 'Allumé' : 'Éteint' }</p>
-    <button on:click={toggleRadiator}>
-      { ($controle_document & 0b100000) !== 0 ? 'Éteindre le radiateur' : 'Allumer le radiateur' }
-    </button>
+    <div class="etiquette">
+      <h2>Chauffe-eau</h2>
+      <p>{ ($controle_document & 0b100000) !== 0 ? 'Allumé 🔥' : 'Éteint ❄️' }</p>
+      <p>Temps de chauffe : {$temps_chauffe} min</p>
+      <p>Température de la cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
+      <button on:click={toggleChauffe}>
+        { ($controle_document & 0b100000) !== 0 ? 'Éteindre' : 'Allumer' }
+      </button>
+    </div>
   {:else}
     <p>Chargement...</p>
   {/if}
+
 </main>
 
 <style>
@@ -72,11 +72,42 @@
     margin: auto;
     padding: 20px;
   }
+  
   .error {
     color: red;
   }
+
+  .etiquette {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .etiquette h2 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .etiquette p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
   button {
     margin-top: 10px;
     padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
   }
 </style>
