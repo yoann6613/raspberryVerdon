@@ -36,9 +36,10 @@ async function getRadiatorState() {
     // Si le document de supervision est trouvé, récupérer les données
     const temps_chauffe = supervisionDocument?.chauffe_eau_temps_chauffe || 0;
     const temperature_cave = supervisionDocument?.chauffe_eau_temperature_cave || 0;
+    const temperature_cpu_pi_zero = supervisionDocument?.temperature_cpu_pi_zero || 0;
 
     console.log(`État actuel du radiateur: ${controleDocument.controle_document}`);
-    return { success: true, controle_document: controleDocument.controle_document, temps_chauffe, temperature_cave };
+    return { success: true, controle_document: controleDocument.controle_document, temps_chauffe, temperature_cave,  temperature_cpu_pi_zero};
 
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error);
@@ -55,7 +56,8 @@ export async function GET() {
     ? json({
         controle_document: result.controle_document,
         temps_chauffe: result.temps_chauffe,
-        temperature_cave: result.temperature_cave
+        temperature_cave: result.temperature_cave,
+        temperature_cpu_pi_zero: result.temperature_cpu_pi_zero
       }, { status: 200 })
     : json({ error: result.error }, { status: 500 });
 }

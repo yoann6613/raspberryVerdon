@@ -6,6 +6,7 @@
   let temps_chauffe = writable<number | null>(null);
   let temperature_cave = writable<number | null>(null);
   let errorMessage = writable('');
+  let temperature_cpu_pi_zero = writable<number | null>(null);
 
   async function fetchInitialState() {
     try {
@@ -16,6 +17,7 @@
         controle_document.set(data.controle_document);
         temps_chauffe.set(data.temps_chauffe);
         temperature_cave.set(data.temperature_cave);
+        temperature_cpu_pi_zero.set(data.temperature_cpu_pi_zero);
       } else {
         errorMessage.set(`Erreur Chauffe-eau: ${data.error || 'Unknown error'}`);
       }
@@ -52,6 +54,7 @@
     <div class="etiquette">
       <h2>Temperatures</h2>
       <p>Cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
+      <p>Cpu : { $temperature_cpu_pi_zero !== null ? $temperature_cpu_pi_zero / 10 : 'N/A' }°C</p>
       <a href="/history" class="history-link">(voir l'historique)</a>
     </div>
   {:else}
