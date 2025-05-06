@@ -6,8 +6,8 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
+    // Utilisation de l'adaptateur Vercel
     adapter: adapter(),
-    target: '#svelte',
   },
 };
 
