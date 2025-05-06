@@ -3,10 +3,8 @@
   import { goto } from '$app/navigation';
 
   onMount(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      goto('/dashboard');
+    goto('/api/login');
     }
-  });
+  );
 </script>
 
