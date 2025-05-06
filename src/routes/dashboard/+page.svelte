@@ -47,69 +47,27 @@
     <p class="error">{$errorMessage}</p>
   {/if}
 
+    <!-- Section temperature -->
+    {#if $controle_document !== null}
+    <div class="etiquette">
+      <h2>Temperatures</h2>
+      <p>Cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
+      <a href="/history" class="history-link">(voir l'historique)</a>
+    </div>
+  {:else}
+    <p>Chargement...</p>
+  {/if}
+
   <!-- Section Radiateur -->
   {#if $controle_document !== null}
     <div class="etiquette">
       <h2>Chauffe-eau</h2>
       <p>{ ($controle_document & 0b100000) !== 0 ? 'Allumé 🔥' : 'Éteint ❄️' }</p>
       <p>Temps de chauffe : {$temps_chauffe} min</p>
-      <p>Température de la cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
       <button on:click={toggleChauffe}>
         { ($controle_document & 0b100000) !== 0 ? 'Éteindre' : 'Allumer' }
       </button>
     </div>
-  {:else}
-    <p>Chargement...</p>
-  {/if}
-
-  <!-- autre Radiateur -->
-
-  {#if $controle_document !== null}
-    <div class="etiquette">
-      <h2>Chauffe-eau</h2>
-      <p>{ ($controle_document & 0b100000) !== 0 ? 'Allumé 🔥' : 'Éteint ❄️' }</p>
-      <p>Temps de chauffe : {$temps_chauffe} min</p>
-      <p>Température de la cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
-      <button on:click={toggleChauffe}>
-        { ($controle_document & 0b100000) !== 0 ? 'Éteindre' : 'Allumer' }
-      </button>
-    </div>
-  {:else}
-    <p>Chargement...</p>
-  {/if}
-
-  
-  <!-- autre Radiateur -->
-
-  {#if $controle_document !== null}
-    <div class="etiquette">
-      <h2>Chauffe-eau</h2>
-      <p>{ ($controle_document & 0b100000) !== 0 ? 'Allumé 🔥' : 'Éteint ❄️' }</p>
-      <p>Temps de chauffe : {$temps_chauffe} min</p>
-      <p>Température de la cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
-      <button on:click={toggleChauffe}>
-        { ($controle_document & 0b100000) !== 0 ? 'Éteindre' : 'Allumer' }
-      </button>
-    </div>
-  {:else}
-    <p>Chargement...</p>
-  {/if}
-
-  
-  <!-- autre Radiateur -->
-
-  {#if $controle_document !== null}
-    <div class="etiquette">
-      <h2>Chauffe-eau</h2>
-      <p>{ ($controle_document & 0b100000) !== 0 ? 'Allumé 🔥' : 'Éteint ❄️' }</p>
-      <p>Temps de chauffe : {$temps_chauffe} min</p>
-      <p>Température de la cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
-      <button on:click={toggleChauffe}>
-        { ($controle_document & 0b100000) !== 0 ? 'Éteindre' : 'Allumer' }
-      </button>
-    </div>
-  {:else}
-    <p>Chargement...</p>
   {/if}
 
 </main>
@@ -149,7 +107,7 @@
     padding: 8px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #3b7bbf;
     color: white;
     cursor: pointer;
     font-size: 16px;
