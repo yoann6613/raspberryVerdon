@@ -55,7 +55,9 @@
       <h2>Temperatures</h2>
       <p>Cave : { $temperature_cave !== null ? $temperature_cave / 10 : 'N/A' }°C</p>
       <p>Cpu : { $temperature_cpu_pi_zero !== null ? $temperature_cpu_pi_zero / 10 : 'N/A' }°C</p>
-      <a href="/history" class="history-link">(voir l'historique)</a>
+      <a href="/history" >
+          <button>voir l'historique</button>
+      </a>
     </div>
   {:else}
     <p>Chargement...</p>

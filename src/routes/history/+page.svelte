@@ -71,6 +71,10 @@
       margin-top: 20px;
     }
   </style>
+
+  <a href="/dashboard" >
+    <button>retour page accueil</button>
+  </a>
   
   <div class="tabs">
     <div class="tab" class:active={$selected === 'cave'} on:click={() => fetchHistory('cave')}>Cave</div>
