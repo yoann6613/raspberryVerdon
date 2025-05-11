@@ -87,17 +87,18 @@
   }
 
   a {
-    text-decoration: none;
+  text-decoration: none;
+  color: inherit;
   }
 </style>
 
 <div class="tabs">
 
   <a href="/dashboard">
-    <button class="return-button">Retour accueil</button>
+    <button class="return-button">Accueil</button>
   </a>
 
-  
+
   <div class="tab" class:active={$selected === 'cave'} on:click={() => fetchHistory('cave')}>Cave</div>
   <div class="tab" class:active={$selected === 'interieur'} on:click={() => fetchHistory('interieur')}>Intérieur</div>
   <div class="tab" class:active={$selected === 'cpu'} on:click={() => fetchHistory('cpu')}>CPU</div>
