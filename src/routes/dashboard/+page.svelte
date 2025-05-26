@@ -9,7 +9,6 @@
   let errorMessage = writable('');
   let temperature_cpu_pi_zero = writable<number | null>(null);
 
-  let refreshCountdown = writable<number>(59); // Timer principal (lecture BDD)
   let nextControllerText = writable<string>(''); // Affichage temps avant écriture contrôleur
 
   // Récupération des données depuis l’API
@@ -32,41 +31,32 @@
   }
 
   // Calcul du temps avant prise en compte par le contrôleur
-function updateControllerTimer() {
-  const now = DateTime.now().setZone('Europe/Paris');
-  const targetHours = [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  function updateControllerTimer() {
+    const now = DateTime.now().setZone('Europe/Paris');
+    const targetHours = [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-  let nextTargetHour = targetHours.find(h => now < now.set({ hour: h, minute: 0, second: 0 }));
-  if (nextTargetHour === undefined) nextTargetHour = 0;
+    let nextTargetHour = targetHours.find(h => now < now.set({ hour: h, minute: 0, second: 0 }));
+    if (nextTargetHour === undefined) nextTargetHour = 0;
 
-  let nextTime = now.set({ hour: nextTargetHour, minute: 0, second: 0 });
-  if (nextTime <= now) nextTime = nextTime.plus({ days: 1 });
+    let nextTime = now.set({ hour: nextTargetHour, minute: 0, second: 0 });
+    if (nextTime <= now) nextTime = nextTime.plus({ days: 1 });
 
-  const diff = nextTime.diff(now, ['hours', 'minutes', 'seconds']).toObject();
-  const h = Math.floor(diff.hours ?? 0);
-  const m = Math.floor(diff.minutes ?? 0);
-  const s = Math.floor(diff.seconds ?? 0);
+    const diff = nextTime.diff(now, ['hours', 'minutes', 'seconds']).toObject();
+    const h = Math.floor(diff.hours ?? 0);
+    const m = Math.floor(diff.minutes ?? 0);
+    const s = Math.floor(diff.seconds ?? 0);
 
-  const formatted =
-    h > 0 ? `${h}h ${m}min ${s}s` : `${m}min ${s}s`;
+    const formatted =
+      h > 0 ? `${h}h ${m}min ${s}s` : `${m}min ${s}s`;
 
-  nextControllerText.set(formatted);
-}
-
+    nextControllerText.set(formatted);
+  }
 
   onMount(() => {
     fetchData(); // Premier fetch immédiat
     updateControllerTimer();
 
     const interval = setInterval(() => {
-      refreshCountdown.update((val) => {
-        if (val <= 0) {
-          fetchData(); // Mise à jour des données depuis la BDD
-          return 59;
-        }
-        return val - 1;
-      });
-
       updateControllerTimer(); // Mise à jour du timer d'écriture
     }, 1000);
 
@@ -95,12 +85,8 @@ function updateControllerTimer() {
   {/if}
 
   <div class="update-section">
-    <h2>Prochaines mises à jour</h2>
+    <h2>Prochaine mise à jour contrôleur</h2>
     <div class="update-grid">
-      <div class="update-item">
-        <p class="label">Lecture :</p>
-        <p class="value">{$refreshCountdown}s</p>
-      </div>
       <div class="update-item">
         <p class="label">Écriture :</p>
         <p class="value">{$nextControllerText}</p>
@@ -157,7 +143,7 @@ function updateControllerTimer() {
 
   .update-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 15px;
   }
 
